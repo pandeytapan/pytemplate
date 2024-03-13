@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# Function to generate ctags
+generate_ctags() {
+    ./scripts/generate_tags.sh
+    if [ $? -eq 0 ]; then
+        echo "Tags generated successfully."
+        touch "$0" # Update last modified timestamp of this script
+    else
+        echo "Error: Failed to generate tags."
+    fi
+}
+
+# Function to display menu
+display_menu() {
+  clear
+    echo "╔═══════════════════════════════╗"
+    echo "║           Menu                ║"
+    echo "╠═══════════════════════════════╣"
+    echo "║ 1. Generate Tags              ║"
+    echo "║ 2. Exit                       ║"
+    echo "╚═══════════════════════════════╝"
+}
+
+# Main menu loop
+while true; do
+    echo "Author: Tapan Pandey"
+    echo
+    display_menu
+
+    read -p "Enter your choice: " choice
+    case "$choice" in
+        1)
+            generate_ctags
+            ;;
+        2)
+            echo "Exiting..."
+            exit 0
+            ;;
+        *)
+            echo "Invalid choice. Please try again."
+            ;;
+    esac
+
+    read -p "Press Enter to continue..."
+done
+
