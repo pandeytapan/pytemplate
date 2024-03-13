@@ -1,0 +1,51 @@
+name: Markdown Syntax Check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  setup:
+    name: Set up environment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Display Message - Checking Out Code
+        run: echo "Successfully checked out code from the repository"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - name: Display Message - Node.js Setup
+        run: echo "Node.js is setup Successfully."
+
+      - name: Install markdownlint-cli
+        run: npm install -g markdownlint-cli
+      - name: Display Message - markdownlint-cli Installation
+        run: echo "markdownlint-cli has been installed successfully."
+
+  lint-markdown:
+    name: Lint Markdown Files
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: Display Message - Linting Markdown Files
+        run: echo "Linting Markdown files..."
+
+      - name: Run markdownlint
+        run: markdownlint '**/*.md' --ignore node_modules --config ./.github/linter/.markdownlint.json
+      - name: Display Message - Linting Complete
+        run: echo "Linting of Markdown files is complete."
+
+      - name: Display Linting Results
+        if: ${{ always() }}
+        run: echo "Review the output above to see the linting results."
+

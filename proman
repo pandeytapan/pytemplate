@@ -11,6 +11,22 @@ generate_ctags() {
     fi
 }
 
+# Function to generate the source file
+generate_source() {
+    ./scripts/generate_source.sh
+    if [ $? -eq 0 ]; then
+        echo "Source file generated successfully."
+        touch "$0" # Update last modified timestamp of this script
+    else
+        echo "Error: Failed to generate source file."
+    fi
+}
+
+# Function to load the virtual environment
+load_virtualenv() {
+    ./scripts/load_virtualenv.sh
+}
+
 # Function to display menu
 display_menu() {
   clear
@@ -18,7 +34,9 @@ display_menu() {
     echo "║           Menu                ║"
     echo "╠═══════════════════════════════╣"
     echo "║ 1. Generate Tags              ║"
-    echo "║ 2. Exit                       ║"
+    echo "║ 2. Generate Source            ║"
+    echo "║ 3. Load virtual environment   ║"
+    echo "║ 4. Exit                       ║"
     echo "╚═══════════════════════════════╝"
 }
 
@@ -34,6 +52,9 @@ while true; do
             generate_ctags
             ;;
         2)
+            generate_source
+            ;;
+        3)
             echo "Exiting..."
             exit 0
             ;;
