@@ -1,0 +1,22 @@
+# Python
+*.pyc
+__pycache__/
+venv/
+env/
+.vscode/
+.idea/
+
+# Flask
+instance/
+
+# pytest
+pytest_cache/
+
+# ctags
+tags
+
+# .env file for managing local environment
+.env
+
+# Any other local setting
+local/
