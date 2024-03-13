@@ -71,9 +71,9 @@ jobs:
           python-version: '3.10'
 
       - name: Activate Virtual Environment
-          run: |
-            python -m venv venv
-            source venv/bin/activate
+        run: |
+          python -m venv venv
+          source venv/bin/activate
 
       - name: Test with pytest
         run: pytest
