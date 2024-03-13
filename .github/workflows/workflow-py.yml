@@ -10,6 +10,8 @@ jobs:
   setup:
     name: Set up environment
     runs-on: ubuntu-latest
+    outputs:
+      workspace: ${{ steps.create_workspace.outputs.workspace }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -31,21 +33,22 @@ jobs:
       - name: Create .env file
         run: echo "key=_value" > config/.env
 
+      - name: Create workspace
+        id: create_workspace
+        run: echo "::set-output name=workspace::$GITHUB_WORKSPACE"
+
   lint:
     name: Lint code with Flake8
     runs-on: ubuntu-latest
     needs: setup
     steps:
-      - name: Checkout repository
+      - name: Attach to workspace
         uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v3
         with:
-          python-version: '3.10'
+          path: ${{ needs.setup.outputs.workspace }}
 
       - name: Navigate to project directory
-        run: cd $GITHUB_WORKSPACE
+        run: cd ${{ needs.setup.outputs.workspace }}
 
       - name: Activate Virtual Environment
         run: source venv/bin/activate
@@ -63,16 +66,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: setup
     steps:
-      - name: Checkout repository
+      - name: Attach to workspace
         uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v3
         with:
-          python-version: '3.10'
+          path: ${{ needs.setup.outputs.workspace }}
 
       - name: Navigate to project directory
-        run: cd $GITHUB_WORKSPACE
+        run: cd ${{ needs.setup.outputs.workspace }}
 
       - name: Activate Virtual Environment
         run: source venv/bin/activate
