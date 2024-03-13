@@ -26,7 +26,7 @@ jobs:
         run: |
           source venv/bin/activate
           pip install --upgrade pip
-          pip install -r ./local/requirements.txt
+          pip install -r ./requirements.txt
 
       - name: Create .env file
         run: echo "key=_value" > config/.env
