@@ -67,6 +67,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+          
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+
 
       - name: Restore virtual environment from cache
         uses: actions/cache@v3
@@ -81,7 +87,8 @@ jobs:
       - name: Activate the virtual environment
         run: |
           source venv/bin/activate
-      
+          ls -la 
+
       - name: List the installed Python packages
         run: |
           pip list
