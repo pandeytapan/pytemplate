@@ -8,14 +8,6 @@ on:
   pull_request:
     branches: [ release ]
 
-# Various jobs to run
-name: Matrix Example
-
-on:
-  push:
-    branches:
-      - main
-
 jobs:
   build:
     runs-on: ubuntu-latest
