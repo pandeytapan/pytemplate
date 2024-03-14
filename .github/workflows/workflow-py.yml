@@ -52,6 +52,7 @@ jobs:
           echo "pip Version: $(pip --version)"
           echo "Installed Packages:"
           pip list
+          
   test:
     runs-on: ubuntu-latest
     needs: build
@@ -80,6 +81,14 @@ jobs:
       - name: Activate the virtual environment
         run: |
           source venv/bin/activate
+
+      - name: Display OS, Python, pip versions, and installed packages
+        run: |
+          echo "Operating System: $(uname -a)"
+          echo "Python Version: $(python --version)"
+          echo "pip Version: $(pip --version)"
+          echo "Installed Packages:"
+          pip list
 
       - name: List the installed Python packages
         run: |
