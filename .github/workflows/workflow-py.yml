@@ -29,6 +29,9 @@ jobs:
       - name: Create and start a virtual environment
         run: |
           python -m venv venv
+
+      - name: Activate the virtual environment
+        run: |
           source venv/bin/activate
 
       - name: Install dependencies
@@ -88,10 +91,6 @@ jobs:
           echo "Python Version: $(python --version)"
           echo "pip Version: $(pip --version)"
           echo "Installed Packages:"
-          pip list
-
-      - name: List the installed Python packages
-        run: |
           pip list
 
       - name: Run tests with pytest
