@@ -55,7 +55,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    needs: cache
+    needs: build
     strategy:
       matrix:
         python-version: [3.9]
