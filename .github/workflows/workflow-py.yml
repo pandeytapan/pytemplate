@@ -1,82 +1,70 @@
-name: Python Syntax Check and Tests
+name: Codebase test and linting
 
+# Triggers
 on:
   push:
+# Using the release branch instead of main/master
     branches: [ release ]
   pull_request:
     branches: [ release ]
 
+# Various jobs to run
 jobs:
-  setup:
-    name: Set up environment
+  build:
     runs-on: ubuntu-latest
-    outputs:
-      workspace: ${{ steps.create_workspace.outputs.workspace }}
+    stratezy:
+      matrix:
+        python-version: [3.10]
+        os: [ubuntu-latest] # CHoose other flavours windows-latest, macos-latest
+    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Python
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v3
         with:
-          python-version: '3.10'
-
-      - name: Create Virtual Environment
-        run: python -m venv venv
+          python-version: ${{ matrix.python-version }}
+          architecture: x64
 
       - name: Install dependencies
         run: |
-          source venv/bin/activate
           python -m pip install --upgrade pip
-          pip install -r ./requirements.txt
+          pip install -r requirements.txt
 
-      - name: Create .env file
-        run: echo "key=_value" > config/.env
-
-      - name: Create workspace
-        id: create_workspace
-        run: echo "::set-output name=workspace::$GITHUB_WORKSPACE"
-
-  lint:
-    name: Lint code with Flake8
-    runs-on: ubuntu-latest
-    needs: setup
-    steps:
-      - name: Attach to workspace
-        uses: actions/checkout@v3
+      - name: Cache virtual environment
+        uses: actions/cache@v3
         with:
-          path: ${{ needs.setup.outputs.workspace }}
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
 
-      - name: Navigate to project directory
-        run: cd ${{ needs.setup.outputs.workspace }}
+    - name: 
+      - name: Check Python version
+        run: python --version
 
-      - name: Activate Virtual Environment
-        run: source venv/bin/activate
-
-      - name: Lint with Flake8
-        run: |
-          flake8 ./ --count --select=E9,F63,F7,F82 --show-source --statistics --exclude=venv
-
-      - name: Run Flake8 with PEP 8 checks
-        run: |
-          flake8 ./ --exit-zero --max-complexity=10 --count --select=E9,F63,F7,F82 --show-source --statistics --exclude=venv
+      - name: Check OS
+        run: echo ${{ matrix.os }}
 
   test:
-    name: Run tests with pytest
     runs-on: ubuntu-latest
-    needs: setup
+    needs: build
+    strategy:
+      matrix:
+        python-version: [3.10]
+        os: [ubuntu-latest]
+
     steps:
-      - name: Attach to workspace
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
         with:
-          path: ${{ needs.setup.outputs.workspace }}
+          python-version: ${{ matrix.python-version }}
+          architecture: x64
 
-      - name: Navigate to project directory
-        run: cd ${{ needs.setup.outputs.workspace }}
+      - name: Restore virtual environment from cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
 
-      - name: Activate Virtual Environment
-        run: source venv/bin/activate
-
-      - name: Test with pytest
+      - name: Run tests
         run: pytest
-
