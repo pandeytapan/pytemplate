@@ -39,23 +39,17 @@ jobs:
       - name: Create and start a virtual environment
         run: |
           python -m venv venv
-
-      - name: Activate the virtual environment
-        run: |
           source venv/bin/activate
-
-      - name: Install dependencies
-        run: |
           pip install -r requirements.txt
 
-      # - name: Cache virtual environment
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: |
-      #       ~/.cache/pip
-      #       ./venv
-      #     key: ${{ runner.os }}-tapan
-      #     restore-keys: ${{ runner.os }}-tapan
+      - name: Cache virtual environment
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/pip
+            ./venv
+          key: ${{ runner.os }}-tapan
+          restore-keys: ${{ runner.os }}-tapan
 
       - name: 2.Display OS, Python, pip versions, and installed packages
         run: |
@@ -65,17 +59,8 @@ jobs:
           echo "$PATH"
           echo "Installed Packages:"
           pip list
-          deactivate
 
-      - name: 3.Display OS, Python, pip versions, and installed packages
-        run: |
-          echo "Operating System: $(uname -a)"
-          echo "Python Version: $(python --version)"
-          echo "pip Version: $(pip --version)"
-          echo "$PATH"
-          echo "Installed Packages:"
-          pip list
-  test:
+ test:
     runs-on: ubuntu-latest
     needs: build
     strategy:
