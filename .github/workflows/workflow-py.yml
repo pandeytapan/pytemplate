@@ -30,8 +30,6 @@ jobs:
           echo PATH=$PATH >> $GITHUB_ENV
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          echo "Installed Packages:"
-          pip list
 
       - name: Cache the virtual environment
         uses: actions/cache@v2
@@ -42,7 +40,7 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
           restore-keys: ${{ runner.os }}-pip
 
-  test:
+lint:
     runs-on: ubuntu-latest
     needs: build
     strategy:
@@ -70,10 +68,35 @@ jobs:
       - name: Run the tests 
         run: |
           . .venv/bin/activate
-          echo "Operating System: $(uname -a)"
-          echo "Python Version: $(python --version)"
-          echo "pip Version: $(pip --version)"
-          echo "Installed Packages:"
-          pip list
+          flake8 ./ --count --select=E9,F63,F7,F82 --show-source --statistics --exclude=venv
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    strategy:
+      matrix:
+        python-version: [3.9]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Restore virtual environment 
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/pip
+            ./.venv
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: ${{ runner.os }}-pip
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run the tests 
+        run: |
+          . .venv/bin/activate
           pytest
 
