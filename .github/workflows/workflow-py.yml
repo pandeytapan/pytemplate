@@ -31,6 +31,7 @@ jobs:
           echo "Operating System: $(uname -a)"
           echo "Python Version: $(python --version)"
           echo "pip Version: $(pip --version)"
+          echo "$PATH"
           echo "Installed Packages:"
           pip list
 
@@ -40,7 +41,7 @@ jobs:
 
       - name: Activate the virtual environment
         run: |
-          source venv/bin/activate
+          venv/bin/activate
 
       - name: Install dependencies
         run: |
@@ -61,15 +62,17 @@ jobs:
           echo "Operating System: $(uname -a)"
           echo "Python Version: $(python --version)"
           echo "pip Version: $(pip --version)"
+          echo "$PATH"
           echo "Installed Packages:"
           pip list
-          source venv/bin/deactivate
+          venv/bin/deactivate
 
       - name: 3.Display OS, Python, pip versions, and installed packages
         run: |
           echo "Operating System: $(uname -a)"
           echo "Python Version: $(python --version)"
           echo "pip Version: $(pip --version)"
+          echo "$PATH"
           echo "Installed Packages:"
           pip list
   test:
@@ -99,7 +102,7 @@ jobs:
 
       - name: Activate the virtual environment
         run: |
-          source venv/bin/activate
+          venv/bin/activate
 
       - name: Display OS, Python, pip versions, and installed packages
         run: |
