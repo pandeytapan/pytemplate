@@ -41,6 +41,8 @@ jobs:
           source venv/bin/activate
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          echo "Installed Packages:"
+          pip list
 
       - name: Cache virtual environment
         uses: actions/cache@v2
@@ -50,8 +52,6 @@ jobs:
             ./venv
           key: ${{ runner.os }}-tapan
           restore-keys: ${{ runner.os }}-tapan
-          echo "Installed Packages:"
-          pip list
 
       - name: 2.Display OS, Python, pip versions, and installed packages
         run: |
