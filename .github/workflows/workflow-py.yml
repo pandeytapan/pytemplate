@@ -30,6 +30,7 @@ jobs:
         run: |
           echo "Operating System: $(uname -a)"
           echo "Python Version: $(python --version)"
+          python -m pip install --upgrade pip
           echo "pip Version: $(pip --version)"
           echo "$PATH"
           echo "Installed Packages:"
@@ -41,21 +42,20 @@ jobs:
 
       - name: Activate the virtual environment
         run: |
-          venv/bin/activate
+          source venv/bin/activate
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Cache virtual environment
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cache/pip
-            ./venv
-          key: ${{ runner.os }}-tapan
-          restore-keys: ${{ runner.os }}-tapan
+      # - name: Cache virtual environment
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: |
+      #       ~/.cache/pip
+      #       ./venv
+      #     key: ${{ runner.os }}-tapan
+      #     restore-keys: ${{ runner.os }}-tapan
 
       - name: 2.Display OS, Python, pip versions, and installed packages
         run: |
