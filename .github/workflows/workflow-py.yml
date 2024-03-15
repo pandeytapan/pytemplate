@@ -26,14 +26,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
             
-      - name: Create and cache the virtual environment
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cache/pip
-            ./.venv
-          key: ${{ runner.os }}-tapan
-          restore-keys: ${{ runner.os }}-tapan
+      - name: Setup the virtual environment 
         run: |
           python -m venv .venv
           . .venv/bin/activate
@@ -42,6 +35,15 @@ jobs:
           pip install -r requirements.txt
           echo "Installed Packages:"
           pip list
+
+      - name: Cache the virtual environment
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/pip
+            ./.venv
+          key: ${{ runner.os }}-tapan
+          restore-keys: ${{ runner.os }}-tapan
 
   test:
     runs-on: ubuntu-latest
@@ -59,7 +61,7 @@ jobs:
         with:
           path: |
             ~/.cache/pip
-            ./venv
+            ./.venv
           key: ${{ runner.os }}-tapan
           restore-keys: ${{ runner.os }}-tapan
 
