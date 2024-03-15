@@ -30,7 +30,6 @@ jobs:
         run: |
           echo "Operating System: $(uname -a)"
           echo "Python Version: $(python --version)"
-          python -m pip install --upgrade pip
           echo "pip Version: $(pip --version)"
           echo "$PATH"
           echo "Installed Packages:"
@@ -40,6 +39,7 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Cache virtual environment
@@ -50,6 +50,8 @@ jobs:
             ./venv
           key: ${{ runner.os }}-tapan
           restore-keys: ${{ runner.os }}-tapan
+          echo "Installed Packages:"
+          pip list
 
       - name: 2.Display OS, Python, pip versions, and installed packages
         run: |
