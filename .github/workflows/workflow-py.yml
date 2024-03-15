@@ -87,19 +87,13 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Activate the virtual environment
+      - name: Run the tests 
         run: |
           venv/bin/activate
-
-      - name: Display OS, Python, pip versions, and installed packages
-        run: |
           echo "Operating System: $(uname -a)"
           echo "Python Version: $(python --version)"
           echo "pip Version: $(pip --version)"
           echo "Installed Packages:"
           pip list
-
-      - name: Run tests with pytest
-        run: |
           pytest
 
