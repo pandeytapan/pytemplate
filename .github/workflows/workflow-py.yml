@@ -10,9 +10,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      ACTIONS_STEP_DEBUG: true
-
     strategy:
       matrix:
         python-version: [3.9]
@@ -42,8 +39,8 @@ jobs:
           path: |
             ~/.cache/pip
             ./.venv
-          key: ${{ runner.os }}-tapan
-          restore-keys: ${{ runner.os }}-tapan
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: ${{ runner.os }}-pip
 
   test:
     runs-on: ubuntu-latest
@@ -56,14 +53,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Restore virtual environment from cache
+      - name: Restore virtual environment 
         uses: actions/cache@v2
         with:
           path: |
             ~/.cache/pip
             ./.venv
-          key: ${{ runner.os }}-tapan
-          restore-keys: ${{ runner.os }}-tapan
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: ${{ runner.os }}-pip
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
