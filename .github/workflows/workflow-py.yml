@@ -65,7 +65,7 @@ jobs:
           echo "$PATH"
           echo "Installed Packages:"
           pip list
-          venv/bin/deactivate
+          deactivate
 
       - name: 3.Display OS, Python, pip versions, and installed packages
         run: |
