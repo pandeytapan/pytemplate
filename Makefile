@@ -17,7 +17,7 @@ SRC_DIR := ./src
 CTAGS_DIR := ./
 
 # Declare the targets that will not produce the files.
-.PHONY: help virtualenv show-venv install run tags
+.PHONY: help virtualenv show-venv install run tags source
 
 help:
 	@echo "Usage: make <target>"
@@ -60,3 +60,7 @@ tags: ## Generate ctags.
 	@echo "Generating ctags ..."
 	@ctags -R --languages=python --python-kinds=-i  "$(SRC_DIR)"
 	@echo "ctags generated."
+
+# Target for creating the source files.
+source: ## Create source files.
+	@./scripts/bash/generate_source.sh
