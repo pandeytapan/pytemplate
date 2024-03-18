@@ -40,7 +40,7 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
           restore-keys: ${{ runner.os }}-pip
 
-  lint:
+  lint-code:
     runs-on: ubuntu-latest
     needs: build
     strategy:
