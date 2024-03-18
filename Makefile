@@ -12,8 +12,12 @@ VENV_NAME := .venv
 PYTHON := $(ENV_PREFIX)python3
 PIP := $(ENV_PREFIX)pip
 
+# Directories
+SRC_DIR := ./src
+CTAGS_DIR := ./
+
 # Declare the targets that will not produce the files.
-.PHONY: help virtualenv show-venv install
+.PHONY: help virtualenv show-venv install run tags
 
 help:
 	@echo "Usage: make <target>"
@@ -44,3 +48,15 @@ show-venv: ## Show the virtual environment.
 	@echo "Running using $(PYTHON) ..."
 	@echo "Python Version" && $(PYTHON) --version
 	@$(PYTHON) -m site
+
+# Target for running the application.
+run: ## Run the application.
+	@echo "Running the application using $(PYTHON)..."
+	@$(PYTHON) $(SRC_DIR)/app.py
+	@echo "Application stopped."
+
+# Target for generating ctags.
+tags: ## Generate ctags.
+	@echo "Generating ctags ..."
+	@ctags -R --languages=python --python-kinds=-i  "$(SRC_DIR)"
+	@echo "ctags generated."
