@@ -17,7 +17,7 @@ SRC_DIR := ./src
 CTAGS_DIR := ./
 
 # Declare the targets that will not produce the files.
-.PHONY: help virtualenv show-venv install run tags source
+.PHONY: help virtualenv show-venv install run tags source lint
 
 help:
 	@echo "Usage: make <target>"
@@ -64,3 +64,10 @@ tags: ## Generate ctags.
 # Target for creating the source files.
 source: ## Create source files.
 	@./scripts/bash/generate_source.sh
+
+# Target for linting the code.
+lint: ## Lint the code.
+	@echo "Linting the code ..."
+	@$(ENV_PREFIX)flake8 $(SRC_DIR)
+	@find $(SRC_DIR) -name '*.py' -exec echo Linting {} \; -exec $(ENV_PREFIX)flake8 {} \;
+	@echo "Code linted."
