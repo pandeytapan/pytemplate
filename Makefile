@@ -17,7 +17,7 @@ SRC_DIR := ./src
 CTAGS_DIR := ./
 
 # Declare the targets that will not produce the files.
-.PHONY: help virtualenv show-venv install run tags source lint
+.PHONY: help virtualenv show-venv install run tags source lint test
 
 help:
 	@echo "Usage: make <target>"
@@ -71,3 +71,11 @@ lint: ## Lint the code.
 	@$(ENV_PREFIX)flake8 $(SRC_DIR)
 	@find $(SRC_DIR) -name '*.py' -exec echo Linting {} \; -exec $(ENV_PREFIX)flake8 {} \;
 	@echo "Code linted."
+
+# Target for running the tests.
+test: lint ## Lint the code and run the tests. 
+	@echo "Running the tests ..."
+	@$(ENV_PREFIX)pytest 
+	@echo "Generating coverage report ..."
+	@$(ENV_PREFIX)coverage html
+	@echo "Tests run."

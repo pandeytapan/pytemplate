@@ -22,3 +22,9 @@ tags
 
 # Any other local setting
 local/
+
+# Code coverage
+htmlcov/
+.coverage
+.coverage.*
+

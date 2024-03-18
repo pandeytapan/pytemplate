@@ -1,5 +1,7 @@
 # test_empty.py
+from src import app
+
 
 def test_always_true():
-    pass
-
+    app.main()
+    assert True
