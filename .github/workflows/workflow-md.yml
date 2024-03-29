@@ -1,4 +1,4 @@
-name: Markdown linting
+name: Markdown - linting
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 jobs:
 
   lint-markdown:
-    name: Lint Markdown
+    name: Validate markdown syntax
     runs-on: ubuntu-latest
 
     steps:
