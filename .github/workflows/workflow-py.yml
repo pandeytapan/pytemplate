@@ -75,7 +75,7 @@ jobs:
   test:
     name: Unit testing and coverage
     runs-on: ubuntu-latest
-    needs: lint-code
+    needs: lint
     strategy:
       matrix:
         python-version: [3.9]
